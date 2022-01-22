@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => {
 				width: 0 /* Remove scrollbar space */,
 				background: "transparent" /* Optional: just make scrollbar invisible */,
 			},
+			overflow: "hidden"
 		},
 	};
 });
