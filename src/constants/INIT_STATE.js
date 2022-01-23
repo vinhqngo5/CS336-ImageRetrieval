@@ -25,4 +25,7 @@ export const INIT_STATE = {
 		},
 	},
 	userInfo: {},
+	imageRetrivalState: {
+		queryImage: "",
+	},
 };

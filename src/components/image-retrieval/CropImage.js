@@ -4,10 +4,11 @@ import { Box } from "@mui/system";
 import React, { PureComponent } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
+import { connect } from "react-redux";
 
-export default class CropImage extends PureComponent {
+class CropImage extends PureComponent {
 	state = {
-		src: null,
+		src: this.props.queryImage,
 		crop: {
 			unit: "%",
 			width: 30,
@@ -19,9 +20,9 @@ export default class CropImage extends PureComponent {
 	onSelectFile = (e) => {
 		if (e.target.files && e.target.files.length > 0) {
 			const reader = new FileReader();
-			reader.addEventListener("load", () =>
-				this.setState({ src: reader.result })
-			);
+			reader.addEventListener("load", () => {
+				this.setState({ src: reader.result });
+			});
 			reader.readAsDataURL(e.target.files[0]);
 		}
 	};
@@ -104,8 +105,16 @@ export default class CropImage extends PureComponent {
 		this.setState({ croppedImageMaxHeight });
 	}
 
+	componentWillReceiveProps(nextProps) {
+		// You don't have to do this check first, but it can help prevent an unneeded render
+		if (nextProps.queryImage !== this.state.src) {
+			this.setState({ src: nextProps.queryImage });
+		}
+	}
+
 	render() {
-		const { crop, croppedImageUrl, src, croppedImageMaxHeight } = this.state;
+		// this.setState({ src: this.props.queryImage })
+		let { crop, croppedImageUrl, croppedImageMaxHeight, src } = this.state;
 
 		return (
 			<Box
@@ -125,7 +134,6 @@ export default class CropImage extends PureComponent {
 							width: "65%",
 							minWidth: "65%",
 							maxWidth: "65%",
-							maxHeight: "350px",
 							overflow: "hidden",
 						}}
 						ruleOfThirds
@@ -177,6 +185,7 @@ export default class CropImage extends PureComponent {
 							maxWidth: "35%",
 							maxHeight: `${croppedImageMaxHeight}px`,
 							marginLeft: "20px",
+							overflow: "hidden",
 						}}
 						src={croppedImageUrl}
 					/>
@@ -185,3 +194,13 @@ export default class CropImage extends PureComponent {
 		);
 	}
 }
+
+const mapStateToProps = (state) => {
+	return {
+		queryImage: state.imageRetrievalState.queryImage,
+	};
+};
+
+const mapDispatchToProps = () => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps())(CropImage);

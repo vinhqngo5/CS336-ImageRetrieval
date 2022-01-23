@@ -8,6 +8,8 @@ import {
 	TextField,
 } from "@mui/material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import * as actions from "../../redux/actions";
 
 const availableQueries = [
 	{ label: "All Souls Oxford" },
@@ -28,18 +30,35 @@ const availableQueries = [
 	{ label: "Oxford" },
 ];
 
+const getBase64FromUrl = async (url) => {
+	const data = await fetch(url);
+	const blob = await data.blob();
+	return new Promise((resolve) => {
+		const reader = new FileReader();
+		reader.readAsDataURL(blob);
+		reader.onloadend = () => {
+			const base64data = reader.result;
+			resolve(base64data);
+		};
+	});
+};
+
 export default function RightSideBar() {
 	const [images, setImages] = useState([]);
 	useEffect(() => {
 		let temp = [];
 		for (let i = 0; i < 30; i++) {
 			temp.push(
-				`https://picsum.photos/${Math.round(
-					200 + Math.random() * 200
-				)}/${Math.round(200 + Math.random() * 200)}`
+				getBase64FromUrl(
+					`https://picsum.photos/${Math.round(
+						200 + Math.random() * 200
+					)}/${Math.round(200 + Math.random() * 200)}`
+				)
 			);
 		}
-		setImages(temp);
+		Promise.all(temp).then((images) => {
+			setImages(images);
+		});
 	}, []);
 
 	return (
@@ -99,12 +118,19 @@ const StytedImage = styled("img")(({ theme }) => ({
 }));
 
 function MasonryImageList({ images }) {
+	const dispatch = useDispatch();
+
+	const selectQueryImage = (image) => {
+		dispatch(actions.selectQueryImage(image));
+	};
+
 	return (
 		<Box sx={{ overflowY: "scroll", height: "95vh", width: "100%" }}>
 			<ImageList variant="masonry" cols={2} gap={12}>
 				{images.map((image, index) => (
 					<ImageListItem key={index}>
 						<StytedImage
+							onClick={() => selectQueryImage(image)}
 							src={`${image}`}
 							alt="Oxford building"
 							loading="lazy"
