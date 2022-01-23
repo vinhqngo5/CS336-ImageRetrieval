@@ -6,6 +6,7 @@ import RightSideBar from "../rightSideBar/RightSideBar";
 import SmallHeader from "../header/SmallHeader";
 import { useTheme } from "@emotion/react";
 export default function MainColumnContainer(props) {
+	const ContainerRightSideBar = props.RightSideBar || RightSideBar;
 	const theme = useTheme();
 	const matches = useMediaQuery(theme.breakpoints.up("md"));
 	return (
@@ -58,7 +59,7 @@ export default function MainColumnContainer(props) {
 						paddingLeft: "20px",
 					}}
 				>
-					<RightSideBar />
+					<ContainerRightSideBar />
 				</Box>
 			</Grid>
 		</Container>

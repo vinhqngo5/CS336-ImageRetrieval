@@ -12,6 +12,7 @@ import { makeStyles } from "@mui/styles";
 import Profile from "./pages/profile/Profile";
 import UserPost from "./pages/profile/UserPost";
 import NotFound from "./pages/notfound/NotFound";
+import RetrieveImage from "./pages/image-retrieval/RetrieveImage";
 
 const useStyles = makeStyles((theme) => {
 	return {
@@ -45,6 +46,9 @@ export function App() {
 					</Route>
 					<Route exact path="/posts">
 						<Posts />
+					</Route>
+					<Route exact path="/image-retrieval">
+						<RetrieveImage />
 					</Route>
 					<Route path="/:authorSlug/:postSlug">
 						<UserPost />

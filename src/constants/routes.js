@@ -3,6 +3,7 @@ import {
 	CreateOutlined,
 	FeedOutlined,
 	HomeOutlined,
+	ImageSearchOutlined,
 	PersonOutlined,
 } from "@mui/icons-material";
 
@@ -23,13 +24,18 @@ export const routes = [
 		to: "/",
 	},
 	{
-		text: "My Posts",
-		startIcon: <FeedOutlined />,
-		to: "/posts",
-	},
-	{
-		text: "Saved",
-		startIcon: <BookmarksOutlined />,
-		to: "/saved",
-	},
+		text: "Image Retrieval",
+		startIcon: <ImageSearchOutlined />,
+		to: "/image-retrieval"
+	}
+	// {
+	// 	text: "My Posts",
+	// 	startIcon: <FeedOutlined />,
+	// 	to: "/posts",
+	// },
+	// {
+	// 	text: "Saved",
+	// 	startIcon: <BookmarksOutlined />,
+	// 	to: "/saved",
+	// },
 ];

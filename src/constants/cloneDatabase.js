@@ -40,19 +40,19 @@ export const fetchedPosts = [
 		postID: 2,
 		authorId: 1,
 		authorName: "Vinh Quang Ngo",
-		postSlug: "microsoft-powerToys",
+		postSlug: "StudentManagement",
 		authorSlug: "vinhqngo5",
-		publishedAt: "Sep 14, 2021",
+		publishedAt: "Jan 14, 2022",
 		postCover:
-			"https://raw.githubusercontent.com/microsoft/PowerToys/master/doc/images/overview/PT%20hero%20image.png",
-		postTitle: "☀️ Microsoft PowerToys",
+			"https://github.com/lehuutrung1412/StudentManagement/raw/main/ReadmeAssets/Newfeed1.png",
+		postTitle: "☀️ Stuman - Student Management",
 		postSubtitle:
-			"About Microsoft PowerToys is a set of utilities for power users to tune and streamline their Windows 10 experience for greater productivity. For more info on PowerToys overviews and guides, or any other tools and resources for Windows development environments, head over to docs.microsoft.com!",
+			"Xây dựng một nền tảng tất cả trong một. Người quản trị, giáo viên, sinh viên có thể sử dụng công cụ để học tập trực tuyến, tra cứu kết quả học tập, đăng ký học phần, quản trị đào tạo, ...",
 		// postSubtitle: "https://github.com/microsoft/PowerToys",
 		// postPreview:
 		// 	"About Microsoft PowerToys is a set of utilities for power users to tune and streamline their Windows 10 experience for greater productivity. For more info on PowerToys overviews and guides, or any other tools and resources for Windows development environments, head over to docs.microsoft.com!",
 		postMarkdown:
-			"https://raw.githubusercontent.com/microsoft/PowerToys/master/README.md",
+			"https://raw.githubusercontent.com/lehuutrung1412/StudentManagement/main/README.md",
 	},
 ];
 
