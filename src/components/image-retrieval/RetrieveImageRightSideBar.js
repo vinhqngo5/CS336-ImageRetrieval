@@ -5,6 +5,7 @@ import {
 	Button,
 	ImageList,
 	ImageListItem,
+	Skeleton,
 	TextField,
 } from "@mui/material";
 import { useState } from "react";
@@ -45,7 +46,9 @@ const getBase64FromUrl = async (url) => {
 
 export default function RightSideBar() {
 	const [images, setImages] = useState([]);
-	useEffect(() => {
+
+	const loadImages = () => {
+		setImages([]);
 		let temp = [];
 		for (let i = 0; i < 30; i++) {
 			temp.push(
@@ -59,6 +62,10 @@ export default function RightSideBar() {
 		Promise.all(temp).then((images) => {
 			setImages(images);
 		});
+	};
+
+	useEffect(() => {
+		loadImages();
 	}, []);
 
 	return (
@@ -98,6 +105,7 @@ export default function RightSideBar() {
 						textTransform: "none",
 					}}
 					variant="outlined"
+					onClick={loadImages}
 				>
 					Search
 				</Button>
@@ -127,16 +135,29 @@ function MasonryImageList({ images }) {
 	return (
 		<Box sx={{ overflowY: "scroll", height: "95vh", width: "100%" }}>
 			<ImageList variant="masonry" cols={2} gap={12}>
-				{images.map((image, index) => (
-					<ImageListItem key={index}>
-						<StytedImage
-							onClick={() => selectQueryImage(image)}
-							src={`${image}`}
-							alt="Oxford building"
-							loading="lazy"
-						/>
-					</ImageListItem>
-				))}
+				{images.length > 0
+					? images.map((image, index) => (
+							<ImageListItem key={index}>
+								<StytedImage
+									onClick={() => selectQueryImage(image)}
+									src={`${image}`}
+									alt="Oxford building"
+									loading="lazy"
+								/>
+							</ImageListItem>
+					  ))
+					: Array.from(new Array(30)).map((el, index) => (
+							<Skeleton
+								key={index}
+								variant="rectangular"
+								sx={{
+									width: "100%",
+									margin: index === 0 ? "0 auto 12px" : "12px auto",
+									height: `${100 + Math.random() * 200}px`,
+									borderRadius: "4px",
+								}}
+							/>
+					  ))}
 			</ImageList>
 		</Box>
 	);
