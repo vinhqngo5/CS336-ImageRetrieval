@@ -1,19 +1,23 @@
 import { PhotoCamera } from "@mui/icons-material";
-import { Button, Input } from "@mui/material";
+import { Button, Input, Paper } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { PureComponent } from "react";
 import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { connect } from "react-redux";
+import { BlogH7 } from "../common/BlogTypography";
 
+const initCropConfig = {
+	unit: "%",
+	width: 100,
+	height: 100,
+	x: 0,
+	y: 0,
+};
 class CropImage extends PureComponent {
 	state = {
 		src: this.props.queryImage,
-		crop: {
-			unit: "%",
-			width: 30,
-			// aspect: 16 / 9,
-		},
+		crop: initCropConfig,
 		croppedImageMaxHeight: 0,
 	};
 
@@ -40,6 +44,7 @@ class CropImage extends PureComponent {
 		// You could also use percentCrop:
 		// this.setState({ crop: percentCrop });
 		this.setState({ crop });
+		console.log("🚀 ~ file: CropImage.js ~ line 44 ~ CropImage ~ crop", crop);
 	};
 
 	async makeClientCrop(crop) {
@@ -98,17 +103,16 @@ class CropImage extends PureComponent {
 	}
 
 	componentDidUpdate() {
-		let croppedImageMaxHeight = this.imageRef?.clientHeight;
-		if (croppedImageMaxHeight && croppedImageMaxHeight > 350) {
-			croppedImageMaxHeight = 350;
+		if (this.state.croppedImageMaxHeight !== this.imageRef?.clientHeight) {
+			let croppedImageMaxHeight = this.imageRef?.clientHeight;
+			this.setState({ croppedImageMaxHeight });
 		}
-		this.setState({ croppedImageMaxHeight });
 	}
 
 	componentWillReceiveProps(nextProps) {
 		// You don't have to do this check first, but it can help prevent an unneeded render
 		if (nextProps.queryImage !== this.state.src) {
-			this.setState({ src: nextProps.queryImage });
+			this.setState({ src: nextProps.queryImage, crop: initCropConfig });
 		}
 	}
 
@@ -178,25 +182,48 @@ class CropImage extends PureComponent {
 					</label>
 				)}
 				{croppedImageUrl && (
-					<Box
+					<Paper
+						variant="outlined"
+						elevation={0}
 						sx={{
 							maxHeight: `${croppedImageMaxHeight}px`,
 							marginLeft: "20px",
+							height: `${croppedImageMaxHeight}px`,
 							flexGrow: "1",
 							justifyContent: "center",
 							display: "flex",
+							borderWidth: "1px",
+							borderStyle: "solid",
+							borderColor: "divider.main",
+							position: "relative",
 						}}
 					>
-						<img
-							alt="Crop"
-							style={{
-								borderRadius: "4px",
-								margin: "0 auto",
-								overflow: "hidden",
+						<Box
+							sx={{
+								width: "100%",
+								height: "100%",
+								display: "flex",
+								flexDirection: "column",
+								justifyContent: "flex-end",
+								alignItems: "center",
+								margin: "auto auto",
 							}}
-							src={croppedImageUrl}
-						/>
-					</Box>
+						>
+							<img
+								alt="Crop"
+								style={{
+									borderRadius: "4px",
+									flexGrow: "1",
+									margin: "10px 10px",
+									maxHeight: `${(croppedImageMaxHeight * 80) / 100}px`,
+									maxWidth: `calc(100% - 20px)`,
+									overflow: "hidden",
+								}}
+								src={croppedImageUrl}
+							/>
+							<BlogH7 sx={{ marginBottom: "10px" }}>Query Image</BlogH7>
+						</Box>
+					</Paper>
 				)}
 			</Box>
 		);
