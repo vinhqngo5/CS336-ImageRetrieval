@@ -109,7 +109,7 @@ export default function RightSideBar() {
 
 const StytedImage = styled("img")(({ theme }) => ({
 	"&:hover": {
-		transform: "scale(1.1)",
+		transform: "scale(1.05)",
 		transition: "0.25s ease",
 		cursor: "pointer",
 	},

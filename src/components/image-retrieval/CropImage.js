@@ -120,7 +120,7 @@ class CropImage extends PureComponent {
 			<Box
 				sx={{
 					display: "flex",
-					justifyContent: src ? "space-between" : "center",
+					justifyContent: src ? "flex-start" : "center",
 					alignItems: "center",
 					width: "100%",
 				}}
@@ -131,8 +131,8 @@ class CropImage extends PureComponent {
 						crop={crop}
 						style={{
 							borderRadius: "4px",
-							width: "65%",
-							minWidth: "65%",
+							// width: "65%",
+							// minWidth: "65%",
 							maxWidth: "65%",
 							overflow: "hidden",
 						}}
@@ -178,17 +178,25 @@ class CropImage extends PureComponent {
 					</label>
 				)}
 				{croppedImageUrl && (
-					<img
-						alt="Crop"
-						style={{
-							borderRadius: "4px",
-							maxWidth: "35%",
+					<Box
+						sx={{
 							maxHeight: `${croppedImageMaxHeight}px`,
 							marginLeft: "20px",
-							overflow: "hidden",
+							flexGrow: "1",
+							justifyContent: "center",
+							display: "flex",
 						}}
-						src={croppedImageUrl}
-					/>
+					>
+						<img
+							alt="Crop"
+							style={{
+								borderRadius: "4px",
+								margin: "0 auto",
+								overflow: "hidden",
+							}}
+							src={croppedImageUrl}
+						/>
+					</Box>
 				)}
 			</Box>
 		);
