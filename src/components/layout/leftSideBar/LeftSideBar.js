@@ -36,7 +36,7 @@ export default function LeftSideBar() {
 							color: "primary.main",
 						}}
 					/>
-					<BlogH6>hocmay</BlogH6>
+					<BlogH6>CS336</BlogH6>
 				</Box>
 
 				{routes.map((route, index) => (

@@ -69,7 +69,7 @@ export default function SmallHeader() {
 						color: "primary.main",
 					}}
 				/>
-				<BlogH6>hocmay</BlogH6>
+				<BlogH6>CS336</BlogH6>
 			</Box>
 
 			<ProfileItems

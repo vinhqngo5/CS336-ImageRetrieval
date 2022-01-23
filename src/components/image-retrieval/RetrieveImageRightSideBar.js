@@ -66,6 +66,7 @@ export default function RightSideBar() {
 						width: "70%",
 						color: "text.primary",
 						backgroundColor: "backgroundSecondary.default",
+						marginRight: "12px",
 					}}
 					id="combo-box-demo"
 					options={availableQueries}
@@ -94,6 +95,7 @@ const StytedImage = styled("img")(({ theme }) => ({
 		cursor: "pointer",
 	},
 	width: "100%",
+	borderRadius: "4px",
 }));
 
 function MasonryImageList({ images }) {
