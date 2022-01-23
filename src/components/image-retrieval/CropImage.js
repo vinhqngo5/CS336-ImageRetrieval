@@ -9,10 +9,10 @@ import { BlogH7 } from "../common/BlogTypography";
 
 const initCropConfig = {
 	unit: "%",
-	width: 100,
-	height: 100,
-	x: 0,
-	y: 0,
+	width: 50,
+	height: 50,
+	x: 20,
+	y: 20,
 };
 class CropImage extends PureComponent {
 	state = {
@@ -34,6 +34,8 @@ class CropImage extends PureComponent {
 	// If you setState the crop in here you should return false.
 	onImageLoaded = (image) => {
 		this.imageRef = image;
+		let croppedImageMaxHeight = this.imageRef?.clientHeight;
+		this.setState({ croppedImageMaxHeight });
 	};
 
 	onCropComplete = (crop) => {
@@ -44,7 +46,6 @@ class CropImage extends PureComponent {
 		// You could also use percentCrop:
 		// this.setState({ crop: percentCrop });
 		this.setState({ crop });
-		console.log("🚀 ~ file: CropImage.js ~ line 44 ~ CropImage ~ crop", crop);
 	};
 
 	async makeClientCrop(crop) {
@@ -103,10 +104,11 @@ class CropImage extends PureComponent {
 	}
 
 	componentDidUpdate() {
-		if (this.state.croppedImageMaxHeight !== this.imageRef?.clientHeight) {
-			let croppedImageMaxHeight = this.imageRef?.clientHeight;
-			this.setState({ croppedImageMaxHeight });
-		}
+		// if (this.state.croppedImageMaxHeight !== this.imageRef?.clientHeight) {
+		// 	console.log("sdfsdf");
+		// 	let croppedImageMaxHeight = this.imageRef?.clientHeight;
+		// 	this.setState({ croppedImageMaxHeight });
+		// }
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -137,6 +139,7 @@ class CropImage extends PureComponent {
 							borderRadius: "4px",
 							// width: "65%",
 							// minWidth: "65%",
+							flexShrink: "0",
 							maxWidth: "65%",
 							overflow: "hidden",
 						}}
@@ -191,7 +194,9 @@ class CropImage extends PureComponent {
 							height: `${croppedImageMaxHeight}px`,
 							flexGrow: "1",
 							justifyContent: "center",
+							alignItems: "center",
 							display: "flex",
+							flexDirection: "column",
 							borderWidth: "1px",
 							borderStyle: "solid",
 							borderColor: "divider.main",
@@ -200,29 +205,26 @@ class CropImage extends PureComponent {
 					>
 						<Box
 							sx={{
-								width: "100%",
-								height: "100%",
+								flexGrow: "1",
 								display: "flex",
-								flexDirection: "column",
-								justifyContent: "flex-end",
+								margin: "10px 10px",
 								alignItems: "center",
-								margin: "auto auto",
+								justifyContent: "center",
 							}}
 						>
 							<img
 								alt="Crop"
 								style={{
 									borderRadius: "4px",
-									flexGrow: "1",
-									margin: "10px 10px",
+
 									maxHeight: `${(croppedImageMaxHeight * 80) / 100}px`,
 									maxWidth: `calc(100% - 20px)`,
 									overflow: "hidden",
 								}}
 								src={croppedImageUrl}
 							/>
-							<BlogH7 sx={{ marginBottom: "10px" }}>Query Image</BlogH7>
 						</Box>
+						<BlogH7 sx={{ marginBottom: "10px" }}>Query Image</BlogH7>
 					</Paper>
 				)}
 			</Box>

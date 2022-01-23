@@ -54,7 +54,7 @@ export default function RightSideBar() {
 			temp.push(
 				getBase64FromUrl(
 					`https://picsum.photos/${Math.round(
-						200 + Math.random() * 200
+						400 + Math.random() * 200
 					)}/${Math.round(200 + Math.random() * 200)}`
 				)
 			);
