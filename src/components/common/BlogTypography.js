@@ -187,7 +187,13 @@ export function BlogCaptionSmall({ sx, ...props }) {
 
 export function BlogSubtitle({ sx, ...props }) {
 	return (
-		<Typography component="p" variant="subtitle2" {...props} sx={{ ...sx }}>
+		<Typography
+			color="textPrimary"
+			component="p"
+			variant="subtitle2"
+			{...props}
+			sx={{ ...sx }}
+		>
 			{props.children}
 		</Typography>
 	);

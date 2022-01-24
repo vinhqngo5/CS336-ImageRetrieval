@@ -6,12 +6,18 @@ import {
 	ImageList,
 	ImageListItem,
 	Skeleton,
+	Switch,
 	TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import * as actions from "../../redux/actions";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
+import {
+	BlogCaption,
+	BlogCaptionSmall,
+	BlogSubtitle,
+} from "../common/BlogTypography";
 
 const availableQueries = [
 	{ label: "All Souls Oxford" },
@@ -32,10 +38,9 @@ const availableQueries = [
 	{ label: "Oxford" },
 ];
 
-
-
 export default function RightSideBar() {
 	const [images, setImages] = useState([]);
+	const [isOpened, setIsOpened] = useState(false);
 
 	const loadImages = () => {
 		setImages([]);
@@ -54,54 +59,83 @@ export default function RightSideBar() {
 		});
 	};
 
+	const handleChange = (event) => {
+		setIsOpened(event.target.checked);
+
+		if (event.target.checked && images.length == 0) {
+			loadImages();
+		}
+	};
+
 	useEffect(() => {
-		loadImages();
+		// loadImages();
 	}, []);
 
 	return (
-		<Box
-			sx={{
-				display: "flex",
-				flexDirection: "column",
-				alignItems: "center",
-				justifyContent: "center",
-			}}
-		>
+		<>
 			<Box
 				sx={{
-					marginTop: "10px",
 					display: "flex",
-					flexDirection: "row",
-					justifyContent: "space-between",
-					width: "100%",
+					alignItems: "center",
+					justifyContent: "flex-start",
 				}}
 			>
-				<Autocomplete
-					disablePortal
-					sx={{
-						width: "70%",
-						color: "text.primary",
-						backgroundColor: "backgroundSecondary.default",
-						marginRight: "12px",
-					}}
-					id="combo-box-demo"
-					options={availableQueries}
-					renderInput={(params) => (
-						<TextField {...params} label="Available queries" size="small" />
-					)}
+				<BlogSubtitle>Turn on image suggest</BlogSubtitle>
+				<Switch
+					checked={isOpened}
+					onChange={handleChange}
+					inputProps={{ "aria-label": "controlled" }}
 				/>
-				<Button
-					sx={{
-						textTransform: "none",
-					}}
-					variant="outlined"
-					onClick={loadImages}
-				>
-					Search
-				</Button>
 			</Box>
-			<MasonryImageList images={images} />
-		</Box>
+			{!isOpened ? (
+				<BlogCaptionSmall>
+					Browse more images of Oxford buildings based on 11 available queries
+				</BlogCaptionSmall>
+			) : (
+				<Box
+					sx={{
+						display: "flex",
+						flexDirection: "column",
+						alignItems: "center",
+						justifyContent: "center",
+					}}
+				>
+					<Box
+						sx={{
+							display: "flex",
+							flexDirection: "row",
+							justifyContent: "space-between",
+							width: "100%",
+						}}
+					>
+						<Autocomplete
+							disablePortal
+							sx={{
+								width: "70%",
+								color: "text.primary",
+								backgroundColor: "backgroundSecondary.default",
+								marginRight: "12px",
+							}}
+							id="combo-box-demo"
+							options={availableQueries}
+							renderInput={(params) => (
+								<TextField {...params} label="Available queries" size="small" />
+							)}
+						/>
+						<Button
+							sx={{
+								textTransform: "none",
+							}}
+							variant="outlined"
+							onClick={loadImages}
+						>
+							Search
+						</Button>
+					</Box>
+					<MasonryImageList images={images} />
+				</Box>
+			)}
+		</>
 	);
 }
 
