@@ -1,5 +1,4 @@
-import { Box, styled } from "@mui/system";
-import React, { useEffect } from "react";
+import { SearchOutlined, Send, SyncAlt } from "@mui/icons-material";
 import {
 	Autocomplete,
 	Button,
@@ -8,9 +7,8 @@ import {
 	Skeleton,
 	TextField,
 } from "@mui/material";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import * as actions from "../../redux/actions";
+import { Box, styled } from "@mui/system";
+import React, { useEffect, useState } from "react";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
 
 const availableQueries = [
@@ -32,9 +30,7 @@ const availableQueries = [
 	{ label: "Oxford" },
 ];
 
-
-
-export default function RightSideBar() {
+export default function RetrieveImage() {
 	const [images, setImages] = useState([]);
 
 	const loadImages = () => {
@@ -44,7 +40,7 @@ export default function RightSideBar() {
 			temp.push(
 				getBase64FromUrl(
 					`https://picsum.photos/${Math.round(
-						200 + Math.random() * 200
+						400 + Math.random() * 200
 					)}/${Math.round(200 + Math.random() * 200)}`
 				)
 			);
@@ -76,60 +72,84 @@ export default function RightSideBar() {
 					width: "100%",
 				}}
 			>
-				<Autocomplete
-					disablePortal
+				<Box
 					sx={{
 						width: "70%",
-						color: "text.primary",
-						backgroundColor: "backgroundSecondary.default",
-						marginRight: "12px",
+						display: "flex",
 					}}
-					id="combo-box-demo"
-					options={availableQueries}
-					renderInput={(params) => (
-						<TextField {...params} label="Available queries" size="small" />
-					)}
-				/>
-				<Button
-					sx={{
-						textTransform: "none",
-					}}
-					variant="outlined"
-					onClick={loadImages}
 				>
-					Search
-				</Button>
+					<Autocomplete
+						disablePortal
+						sx={{
+							color: "text.primary",
+							backgroundColor: "backgroundSecondary.default",
+							marginRight: "12px",
+							flexGrow: "1",
+						}}
+						id="combo-box-demo"
+						options={availableQueries}
+						renderInput={(params) => (
+							<TextField {...params} label="setting 1" size="small" />
+						)}
+					/>
+					<Autocomplete
+						disablePortal
+						sx={{
+							color: "text.primary",
+							backgroundColor: "backgroundSecondary.default",
+							marginRight: "12px",
+							flexGrow: "1",
+						}}
+						id="combo-box-demo"
+						options={availableQueries}
+						renderInput={(params) => (
+							<TextField {...params} label="setting 2" size="small" />
+						)}
+					/>
+				</Box>
+				<Box
+					sx={{
+						display: "flex",
+					}}
+				>
+					<Button
+						sx={{
+							textTransform: "none",
+							marginRight: "12px",
+						}}
+						variant="outlined"
+						onClick={loadImages}
+						endIcon={<SearchOutlined />}
+					>
+						Search
+					</Button>
+					<Button
+						sx={{
+							textTransform: "none",
+						}}
+						variant="outlined"
+						color="success"
+						onClick={loadImages}
+						endIcon={<SyncAlt />}
+						disableElevation
+					>
+						Update
+					</Button>
+				</Box>
 			</Box>
 			<MasonryImageList images={images} />
 		</Box>
 	);
 }
 
-const StytedImage = styled("img")(({ theme }) => ({
-	"&:hover": {
-		transform: "scale(1.05)",
-		transition: "0.25s ease",
-		cursor: "pointer",
-	},
-	width: "100%",
-	borderRadius: "4px",
-}));
-
 function MasonryImageList({ images }) {
-	const dispatch = useDispatch();
-
-	const selectQueryImage = (image) => {
-		dispatch(actions.selectQueryImage(image));
-	};
-
 	return (
-		<Box sx={{ overflowY: "scroll", height: "95vh", width: "100%" }}>
+		<Box sx={{ width: "100%" }}>
 			<ImageList variant="masonry" cols={2} gap={12}>
 				{images.length > 0
 					? images.map((image, index) => (
 							<ImageListItem key={index}>
 								<StytedImage
-									onClick={() => selectQueryImage(image)}
 									src={`${image}`}
 									alt="Oxford building"
 									loading="lazy"
@@ -152,3 +172,13 @@ function MasonryImageList({ images }) {
 		</Box>
 	);
 }
+
+const StytedImage = styled("img")(({ theme }) => ({
+	"&:hover": {
+		transform: "scale(1.05)",
+		transition: "0.25s ease",
+		cursor: "pointer",
+	},
+	width: "100%",
+	borderRadius: "4px",
+}));
