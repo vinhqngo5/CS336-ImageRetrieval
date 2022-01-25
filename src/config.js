@@ -1,2 +1,2 @@
-export const URL = "http://20.205.3.103:6868";
-export const STATIC_URL = "http://20.205.3.103:6868/get-image"
+export const URL = "https://20.205.3.103";
+export const STATIC_URL = "https://20.205.3.103/get-image"

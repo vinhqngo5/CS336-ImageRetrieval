@@ -41,7 +41,7 @@ export default function RetrieveImage() {
 
 	const loadImages = () => {
 		getBase64FromUrl(
-			"http://20.205.3.103:6868/get-image/all_souls_000150.jpg"
+			"https://20.205.3.103/get-image/all_souls_000150.jpg"
 		).then((base64) => {
 			console.log(
 				"🚀 ~ file: RetriveImage.js ~ line 46 ~ ).then ~ base64",
