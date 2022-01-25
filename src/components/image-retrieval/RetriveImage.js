@@ -9,6 +9,10 @@ import {
 } from "@mui/material";
 import { Box, styled } from "@mui/system";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import * as actions from "../../redux/actions";
+import { imageRetrievalState$ } from "../../redux/selectors";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
 
 const availableQueries = [
@@ -32,8 +36,20 @@ const availableQueries = [
 
 export default function RetrieveImage() {
 	const [images, setImages] = useState([]);
+	const dispatch = useDispatch();
+	const imageRetrievalState = useSelector(imageRetrievalState$);
 
 	const loadImages = () => {
+		getBase64FromUrl(
+			"http://20.205.3.103:6868/get-image/all_souls_000150.jpg"
+		).then((base64) => {
+			console.log(
+				"🚀 ~ file: RetriveImage.js ~ line 46 ~ ).then ~ base64",
+				base64
+			);
+			dispatch(actions.fetchRelevantImages.fetchRelevantImagesRequest(base64));
+		});
+
 		setImages([]);
 		let temp = [];
 		for (let i = 0; i < 30; i++) {

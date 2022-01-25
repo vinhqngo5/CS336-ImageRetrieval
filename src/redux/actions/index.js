@@ -37,3 +37,9 @@ export const fetchSuggestedImages = createActions({
 	fetchSuggestedImagesSuccess: (payload) => payload,
 	fetchSuggestedImagesFailure: (err) => err,
 });
+
+export const fetchRelevantImages = createActions({
+	fetchRelevantImagesRequest: (payload) => payload,
+	fetchRelevantImagesSuccess: (payload) => payload,
+	fetchRelevantImagesFailure: (err) => err,
+});

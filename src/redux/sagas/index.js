@@ -70,10 +70,6 @@ function* fetchSuggestedImagesSaga(action) {
 			api.fetchSuggestedImages,
 			action.payload
 		);
-		console.log(
-			"🚀 ~ file: index.js ~ line 70 ~ function*fetchSuggestedImagesSaga ~ suggestedImages",
-			suggestedImages
-		);
 		yield put(
 			actions.fetchSuggestedImages.fetchSuggestedImagesSuccess(
 				suggestedImages.data
@@ -82,6 +78,20 @@ function* fetchSuggestedImagesSaga(action) {
 	} catch (err) {
 		console.error(err);
 		yield put(actions.fetchSuggestedImages.fetchSuggestedImagesFailure(err));
+	}
+}
+
+function* fetchRelevantImagesSaga(action) {
+	try {
+		const relevantImages = yield call(api.fetchRelevantImages, action.payload);
+		yield put(
+			actions.fetchRelevantImages.fetchRelevantImagesSuccess(
+				relevantImages.data
+			)
+		);
+	} catch (err) {
+		console.error(err);
+		yield put(actions.fetchRelevantImages.fetchRelevantImagesFailure(err));
 	}
 }
 
@@ -99,6 +109,10 @@ function* mySaga() {
 	yield takeLatest(
 		actions.fetchSuggestedImages.fetchSuggestedImagesRequest,
 		fetchSuggestedImagesSaga
+	);
+	yield takeLatest(
+		actions.fetchRelevantImages.fetchRelevantImagesRequest,
+		fetchRelevantImagesSaga
 	);
 	// yield takeLatest(actions.switchDarkMode, fetchPostMarkdownSaga);
 }

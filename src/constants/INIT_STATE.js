@@ -28,6 +28,8 @@ export const INIT_STATE = {
 	imageRetrievalState: {
 		queryImage: "",
 		suggestedImages: [],
+		relevantImages: [],
 		isLoadingSuggestedImages: false,
+		isLoadingRelevantImages: false,
 	},
 };

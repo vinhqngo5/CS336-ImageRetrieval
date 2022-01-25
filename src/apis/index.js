@@ -10,6 +10,14 @@ export const fetchSuggestedImages = (category) => {
 	return axios.post(`${URL}/get-suggest-query`, body);
 };
 
+export const fetchRelevantImages = (image, top_k = 10) => {
+	let body = {
+		query: image,
+		top_k: top_k,
+	};
+	return axios.post(`${URL}/query`, body);
+};
+
 export const fetchPosts = () => {
 	if (store.getState().blogState.fetchedPosts == null) return fetchedPosts;
 	else return store.getState().blogState.fetchedPosts;

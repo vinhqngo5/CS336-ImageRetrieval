@@ -52,21 +52,6 @@ export default function RightSideBar() {
 		dispatch(
 			actions.fetchSuggestedImages.fetchSuggestedImagesRequest("christ_church")
 		);
-		// setImages([]);
-		// let temp = [];
-		// for (let i = 0; i < 30; i++) {
-		// 	temp.push(
-		// 		getBase64FromUrl(
-		// 			// `https://picsum.photos/${Math.round(
-		// 			// 	200 + Math.random() * 200
-		// 			// )}/${Math.round(200 + Math.random() * 200)}`
-		// 			"http://20.205.3.103:6868/get-image/all_souls_000150.jpg"
-		// 		)
-		// 	);
-		// }
-		// Promise.all(temp).then((images) => {
-		// 	setImages(images);
-		// });
 	};
 
 	const handleChange = (event) => {
@@ -161,6 +146,7 @@ const StytedImage = styled("img")(({ theme }) => ({
 
 function MasonryImageList({ images }) {
 	const dispatch = useDispatch();
+	const imageRetrievalState = useSelector(imageRetrievalState$);
 
 	const selectQueryImage = (image) => {
 		getBase64FromUrl(image).then((img) => {
@@ -171,7 +157,7 @@ function MasonryImageList({ images }) {
 	return (
 		<Box sx={{ overflowY: "scroll", height: "95vh", width: "100%" }}>
 			<ImageList variant="masonry" cols={2} gap={12}>
-				{images.length > 0
+				{!imageRetrievalState.isLoadingSuggestedImages
 					? images.map((image, index) => (
 							<ImageListItem key={index}>
 								<StytedImage

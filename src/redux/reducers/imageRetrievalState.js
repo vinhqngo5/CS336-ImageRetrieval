@@ -1,5 +1,10 @@
 import { INIT_STATE } from "../../constants/INIT_STATE";
-import { fetchSuggestedImages, getType, selectQueryImage } from "../actions";
+import {
+	fetchRelevantImages,
+	fetchSuggestedImages,
+	getType,
+	selectQueryImage,
+} from "../actions";
 
 export default function modalReducer(
 	state = INIT_STATE.imageRetrievalState,
@@ -26,6 +31,26 @@ export default function modalReducer(
 			return {
 				...state,
 				isLoadingSuggestedImages: false,
+			};
+		case getType(fetchRelevantImages.fetchRelevantImagesRequest):
+			return {
+				...state,
+				isLoadingRelevantImages: true,
+			};
+		case getType(fetchRelevantImages.fetchRelevantImagesSuccess):
+			console.log(
+				"🚀 ~ file: imageRetrievalState.js ~ line 44 ~ action.payload",
+				action.payload
+			);
+			return {
+				...state,
+				RelevantImages: action.payload.result,
+				isLoadingRelevantImages: false,
+			};
+		case getType(fetchRelevantImages.fetchRelevantImagesFailure):
+			return {
+				...state,
+				isLoadingRelevantImages: false,
 			};
 		default:
 			return state;
