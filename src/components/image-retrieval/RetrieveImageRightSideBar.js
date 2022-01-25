@@ -10,7 +10,7 @@ import {
 	TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as actions from "../../redux/actions";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
 import {
@@ -18,6 +18,8 @@ import {
 	BlogCaptionSmall,
 	BlogSubtitle,
 } from "../common/BlogTypography";
+import { imageRetrievalState$ } from "../../redux/selectors";
+import { STATIC_URL } from "../../config";
 
 const availableQueries = [
 	{ label: "All Souls Oxford" },
@@ -39,24 +41,32 @@ const availableQueries = [
 ];
 
 export default function RightSideBar() {
-	const [images, setImages] = useState([]);
+	const dispatch = useDispatch();
+	const imageRetrievalState = useSelector(imageRetrievalState$);
+
+	// const [images, setImages] = useState([]);
+	const images = imageRetrievalState.suggestedImages;
 	const [isOpened, setIsOpened] = useState(false);
 
 	const loadImages = () => {
-		setImages([]);
-		let temp = [];
-		for (let i = 0; i < 30; i++) {
-			temp.push(
-				getBase64FromUrl(
-					`https://picsum.photos/${Math.round(
-						200 + Math.random() * 200
-					)}/${Math.round(200 + Math.random() * 200)}`
-				)
-			);
-		}
-		Promise.all(temp).then((images) => {
-			setImages(images);
-		});
+		dispatch(
+			actions.fetchSuggestedImages.fetchSuggestedImagesRequest("christ_church")
+		);
+		// setImages([]);
+		// let temp = [];
+		// for (let i = 0; i < 30; i++) {
+		// 	temp.push(
+		// 		getBase64FromUrl(
+		// 			// `https://picsum.photos/${Math.round(
+		// 			// 	200 + Math.random() * 200
+		// 			// )}/${Math.round(200 + Math.random() * 200)}`
+		// 			"http://20.205.3.103:6868/get-image/all_souls_000150.jpg"
+		// 		)
+		// 	);
+		// }
+		// Promise.all(temp).then((images) => {
+		// 	setImages(images);
+		// });
 	};
 
 	const handleChange = (event) => {
@@ -153,7 +163,9 @@ function MasonryImageList({ images }) {
 	const dispatch = useDispatch();
 
 	const selectQueryImage = (image) => {
-		dispatch(actions.selectQueryImage(image));
+		getBase64FromUrl(image).then((img) => {
+			dispatch(actions.selectQueryImage(img));
+		});
 	};
 
 	return (
@@ -163,8 +175,8 @@ function MasonryImageList({ images }) {
 					? images.map((image, index) => (
 							<ImageListItem key={index}>
 								<StytedImage
-									onClick={() => selectQueryImage(image)}
-									src={`${image}`}
+									onClick={() => selectQueryImage(`${STATIC_URL}/${image}`)}
+									src={`${STATIC_URL}/${image}`}
 									alt="Oxford building"
 									loading="lazy"
 								/>

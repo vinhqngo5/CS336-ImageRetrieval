@@ -64,6 +64,27 @@ function* fetchUserInfoSaga() {
 	}
 }
 
+function* fetchSuggestedImagesSaga(action) {
+	try {
+		const suggestedImages = yield call(
+			api.fetchSuggestedImages,
+			action.payload
+		);
+		console.log(
+			"🚀 ~ file: index.js ~ line 70 ~ function*fetchSuggestedImagesSaga ~ suggestedImages",
+			suggestedImages
+		);
+		yield put(
+			actions.fetchSuggestedImages.fetchSuggestedImagesSuccess(
+				suggestedImages.data
+			)
+		);
+	} catch (err) {
+		console.error(err);
+		yield put(actions.fetchSuggestedImages.fetchSuggestedImagesFailure(err));
+	}
+}
+
 function* mySaga() {
 	yield takeLatest(
 		actions.fetchUserInfo.fetchUserInfoRequest,
@@ -75,6 +96,10 @@ function* mySaga() {
 		fetchPostMarkdownSaga
 	);
 	yield takeLatest(actions.createPost.createPostRequest, createPostSaga);
+	yield takeLatest(
+		actions.fetchSuggestedImages.fetchSuggestedImagesRequest,
+		fetchSuggestedImagesSaga
+	);
 	// yield takeLatest(actions.switchDarkMode, fetchPostMarkdownSaga);
 }
 export default mySaga;

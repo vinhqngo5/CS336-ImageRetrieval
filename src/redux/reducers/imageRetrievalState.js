@@ -1,8 +1,8 @@
 import { INIT_STATE } from "../../constants/INIT_STATE";
-import { getType, selectQueryImage } from "../actions";
+import { fetchSuggestedImages, getType, selectQueryImage } from "../actions";
 
 export default function modalReducer(
-	state = INIT_STATE.imageRetrivalState,
+	state = INIT_STATE.imageRetrievalState,
 	action
 ) {
 	switch (action.type) {
@@ -10,6 +10,22 @@ export default function modalReducer(
 			return {
 				...state,
 				queryImage: action.payload,
+			};
+		case getType(fetchSuggestedImages.fetchSuggestedImagesRequest):
+			return {
+				...state,
+				isLoadingSuggestedImages: true,
+			};
+		case getType(fetchSuggestedImages.fetchSuggestedImagesSuccess):
+			return {
+				...state,
+				suggestedImages: action.payload.result,
+				isLoadingSuggestedImages: false,
+			};
+		case getType(fetchSuggestedImages.fetchSuggestedImagesFailure):
+			return {
+				...state,
+				isLoadingSuggestedImages: false,
 			};
 		default:
 			return state;

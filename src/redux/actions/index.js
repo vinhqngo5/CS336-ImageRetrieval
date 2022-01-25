@@ -31,3 +31,9 @@ export const createPost = createActions({
 	createPostSuccess: (payload) => payload,
 	createPostFailure: (err) => err,
 });
+
+export const fetchSuggestedImages = createActions({
+	fetchSuggestedImagesRequest: (payload) => payload,
+	fetchSuggestedImagesSuccess: (payload) => payload,
+	fetchSuggestedImagesFailure: (err) => err,
+});
