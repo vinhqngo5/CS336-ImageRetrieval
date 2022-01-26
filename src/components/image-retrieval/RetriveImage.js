@@ -153,7 +153,7 @@ function MasonryImageList({ images }) {
 					{imageRetrievalState.relevantImages.query_time}s)
 				</BlogCaptionSmall>
 			) : (
-				<div style={{ marginTop: "12px" }} />
+				<div />
 			)}
 			<ImageList variant="masonry" cols={2} gap={12}>
 				{!imageRetrievalState.isLoadingRelevantImages

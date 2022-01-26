@@ -28,7 +28,9 @@ class CropImage extends PureComponent {
 			const reader = new FileReader();
 			reader.addEventListener("load", () => {
 				this.setState({ src: reader.result });
+				this.props.selectQueryImage(reader.result);
 			});
+
 			reader.readAsDataURL(e.target.files[0]);
 		}
 	};
@@ -248,9 +250,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		// dispatching plain actions
-		selectCroppedQueryImage: (croppedImage) => {
-			return dispatch(actions.selectCroppedQueryImage(croppedImage));
-		},
+		selectCroppedQueryImage: (croppedImage) =>
+			dispatch(actions.selectCroppedQueryImage(croppedImage)),
+		selectQueryImage: (image) => dispatch(actions.selectQueryImage(image)),
 	};
 };
 
