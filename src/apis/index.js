@@ -11,10 +11,13 @@ export const fetchSuggestedImages = (category) => {
 };
 
 export const fetchRelevantImages = (image, top_k = 10) => {
-	let body = {
-		query: image,
-		top_k: top_k,
-	};
+	// let body = {
+	// 	query: image,
+	// 	top_k: top_k,
+	// };
+	const body = new FormData();
+	body.append("query", image);
+	body.append("top_k", top_k);
 	return axios.post(`${URL}/query`, body);
 };
 
