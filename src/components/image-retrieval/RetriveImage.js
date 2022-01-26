@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import * as actions from "../../redux/actions";
 import { imageRetrievalState$ } from "../../redux/selectors";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
+import { STATIC_URL } from "../../config";
 
 const availableQueries = [
 	{ label: "All Souls Oxford" },
@@ -35,35 +36,36 @@ const availableQueries = [
 ];
 
 export default function RetrieveImage() {
-	const [images, setImages] = useState([]);
+	// const [images, setImages] = useState([]);
 	const dispatch = useDispatch();
 	const imageRetrievalState = useSelector(imageRetrievalState$);
+	const images = imageRetrievalState.relevantImages.relevant_image_name;
+	console.log(
+		"🚀 ~ file: RetriveImage.js ~ line 42 ~ RetrieveImage ~ imageRetrievalState.relevantImages",
+		imageRetrievalState.relevantImages
+	);
 
 	const loadImages = () => {
 		getBase64FromUrl(
 			"https://20.205.3.103/get-image/all_souls_000150.jpg"
 		).then((base64) => {
-			console.log(
-				"🚀 ~ file: RetriveImage.js ~ line 46 ~ ).then ~ base64",
-				base64
-			);
 			dispatch(actions.fetchRelevantImages.fetchRelevantImagesRequest(base64));
 		});
 
-		setImages([]);
-		let temp = [];
-		for (let i = 0; i < 30; i++) {
-			temp.push(
-				getBase64FromUrl(
-					`https://picsum.photos/${Math.round(
-						400 + Math.random() * 200
-					)}/${Math.round(200 + Math.random() * 200)}`
-				)
-			);
-		}
-		Promise.all(temp).then((images) => {
-			setImages(images);
-		});
+		// setImages([]);
+		// let temp = [];
+		// for (let i = 0; i < 30; i++) {
+		// 	temp.push(
+		// 		getBase64FromUrl(
+		// 			`https://picsum.photos/${Math.round(
+		// 				400 + Math.random() * 200
+		// 			)}/${Math.round(200 + Math.random() * 200)}`
+		// 		)
+		// 	);
+		// }
+		// Promise.all(temp).then((images) => {
+		// 	setImages(images);
+		// });
 	};
 
 	useEffect(() => {
@@ -159,14 +161,19 @@ export default function RetrieveImage() {
 }
 
 function MasonryImageList({ images }) {
+	console.log(
+		"🚀 ~ file: RetriveImage.js ~ line 163 ~ MasonryImageList ~ images",
+		images
+	);
+	const imageRetrievalState = useSelector(imageRetrievalState$);
 	return (
 		<Box sx={{ width: "100%" }}>
 			<ImageList variant="masonry" cols={2} gap={12}>
-				{images.length > 0
-					? images.map((image, index) => (
+				{!imageRetrievalState.isLoadingRelevantImages
+					? (images || []).map((image, index) => (
 							<ImageListItem key={index}>
 								<StytedImage
-									src={`${image}`}
+									src={`${STATIC_URL}/${image}`}
 									alt="Oxford building"
 									loading="lazy"
 								/>

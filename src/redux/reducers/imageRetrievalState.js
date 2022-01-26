@@ -44,7 +44,7 @@ export default function modalReducer(
 			);
 			return {
 				...state,
-				RelevantImages: action.payload.result,
+				relevantImages: action.payload.result,
 				isLoadingRelevantImages: false,
 			};
 		case getType(fetchRelevantImages.fetchRelevantImagesFailure):
