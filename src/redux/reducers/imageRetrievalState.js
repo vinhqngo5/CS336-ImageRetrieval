@@ -3,6 +3,7 @@ import {
 	fetchRelevantImages,
 	fetchSuggestedImages,
 	getType,
+	selectCroppedQueryImage,
 	selectQueryImage,
 } from "../actions";
 
@@ -15,6 +16,11 @@ export default function modalReducer(
 			return {
 				...state,
 				queryImage: action.payload,
+			};
+		case getType(selectCroppedQueryImage):
+			return {
+				...state,
+				croppedQueryImage: action.payload,
 			};
 		case getType(fetchSuggestedImages.fetchSuggestedImagesRequest):
 			return {

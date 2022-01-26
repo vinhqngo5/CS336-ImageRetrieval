@@ -27,6 +27,7 @@ export const INIT_STATE = {
 	userInfo: {},
 	imageRetrievalState: {
 		queryImage: "",
+		croppedQueryImage: "",
 		suggestedImages: [],
 		relevantImages: {},
 		isLoadingSuggestedImages: false,

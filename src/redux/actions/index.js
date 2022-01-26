@@ -7,6 +7,9 @@ export const getType = (reduxAction) => {
 export const switchLightMode = createAction("SWITCH_LIGHT_MODE");
 export const switchDarkMode = createAction("SWITCH_DARK_MODE");
 export const selectQueryImage = createAction("SELECT_QUERY_IMAGE");
+export const selectCroppedQueryImage = createAction(
+	"SELECT_CROPPED_QUERY_IMAGE"
+);
 
 export const fetchPosts = createActions({
 	fetchPostsRequest: undefined,

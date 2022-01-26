@@ -15,6 +15,7 @@ import * as actions from "../../redux/actions";
 import { imageRetrievalState$ } from "../../redux/selectors";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
 import { STATIC_URL } from "../../config";
+import { BlogCaptionSmall, BlogSubtitle } from "../common/BlogTypography";
 
 const availableQueries = [
 	{ label: "All Souls Oxford" },
@@ -40,37 +41,19 @@ export default function RetrieveImage() {
 	const dispatch = useDispatch();
 	const imageRetrievalState = useSelector(imageRetrievalState$);
 	const images = imageRetrievalState.relevantImages.relevant_image_name;
-	console.log(
-		"🚀 ~ file: RetriveImage.js ~ line 42 ~ RetrieveImage ~ imageRetrievalState.relevantImages",
-		imageRetrievalState.relevantImages
-	);
 
 	const loadImages = () => {
-		getBase64FromUrl(
-			"https://20.205.3.103/get-image/all_souls_000150.jpg"
-		).then((base64) => {
+		getBase64FromUrl(imageRetrievalState.croppedQueryImage).then((base64) => {
 			dispatch(actions.fetchRelevantImages.fetchRelevantImagesRequest(base64));
 		});
-
-		// setImages([]);
-		// let temp = [];
-		// for (let i = 0; i < 30; i++) {
-		// 	temp.push(
-		// 		getBase64FromUrl(
-		// 			`https://picsum.photos/${Math.round(
-		// 				400 + Math.random() * 200
-		// 			)}/${Math.round(200 + Math.random() * 200)}`
-		// 		)
-		// 	);
-		// }
-		// Promise.all(temp).then((images) => {
-		// 	setImages(images);
-		// });
 	};
 
 	useEffect(() => {
-		loadImages();
-	}, []);
+		console.log(
+			"🚀 ~ file: RetriveImage.js ~ line 52 ~ RetrieveImage ~ imageRetrievalState.relevantImages",
+			imageRetrievalState.relevantImages
+		);
+	}, [imageRetrievalState]);
 
 	return (
 		<Box
@@ -161,13 +144,17 @@ export default function RetrieveImage() {
 }
 
 function MasonryImageList({ images }) {
-	console.log(
-		"🚀 ~ file: RetriveImage.js ~ line 163 ~ MasonryImageList ~ images",
-		images
-	);
 	const imageRetrievalState = useSelector(imageRetrievalState$);
 	return (
 		<Box sx={{ width: "100%" }}>
+			{images && !imageRetrievalState.isLoadingRelevantImages ? (
+				<BlogCaptionSmall sx={{ marginTop: "12px" }}>
+					Query 10 most relevant images (
+					{imageRetrievalState.relevantImages.query_time}s)
+				</BlogCaptionSmall>
+			) : (
+				<div style={{ marginTop: "12px" }} />
+			)}
 			<ImageList variant="masonry" cols={2} gap={12}>
 				{!imageRetrievalState.isLoadingRelevantImages
 					? (images || []).map((image, index) => (

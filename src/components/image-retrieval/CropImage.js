@@ -6,6 +6,8 @@ import ReactCrop from "react-image-crop";
 import "react-image-crop/dist/ReactCrop.css";
 import { connect } from "react-redux";
 import { BlogH7 } from "../common/BlogTypography";
+import * as actions from "../../redux/actions";
+import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
 
 const initCropConfig = {
 	unit: "%",
@@ -56,6 +58,10 @@ class CropImage extends PureComponent {
 				"newFile.jpeg"
 			);
 			this.setState({ croppedImageUrl });
+
+			this.props.selectCroppedQueryImage(
+				await getBase64FromUrl(croppedImageUrl)
+			);
 		}
 	}
 
@@ -235,9 +241,17 @@ class CropImage extends PureComponent {
 const mapStateToProps = (state) => {
 	return {
 		queryImage: state.imageRetrievalState.queryImage,
+		croppedQueryImage: state.imageRetrievalState.croppedQueryImage,
 	};
 };
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = (dispatch) => {
+	return {
+		// dispatching plain actions
+		selectCroppedQueryImage: (croppedImage) => {
+			return dispatch(actions.selectCroppedQueryImage(croppedImage));
+		},
+	};
+};
 
-export default connect(mapStateToProps, mapDispatchToProps())(CropImage);
+export default connect(mapStateToProps, mapDispatchToProps)(CropImage);
