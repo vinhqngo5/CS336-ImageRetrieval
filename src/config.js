@@ -1,2 +1,2 @@
-export const URL = "https://20.205.3.103";
-export const STATIC_URL = "https://20.205.3.103/get-image"
+export const URL = "https://cs336-backend.eastasia.cloudapp.azure.com/";
+export const STATIC_URL = "https://cs336-backend.eastasia.cloudapp.azure.com/get-image"

@@ -159,11 +159,20 @@ function MasonryImageList({ images }) {
 				{!imageRetrievalState.isLoadingRelevantImages
 					? (images || []).map((image, index) => (
 							<ImageListItem key={index}>
-								<StytedImage
+								{/* <StytedImage
 									src={`${STATIC_URL}/${image}`}
 									alt="Oxford building"
 									loading="lazy"
-								/>
+								/> */}
+								<BBoxImage
+									imageLink={`${STATIC_URL}/${image}`}
+									info={{
+										x: 200,
+										y: 220,
+										w: 100,
+										h: 50,
+									}}
+								></BBoxImage>
 							</ImageListItem>
 					  ))
 					: Array.from(new Array(30)).map((el, index) => (
@@ -192,3 +201,38 @@ const StytedImage = styled("img")(({ theme }) => ({
 	width: "100%",
 	borderRadius: "4px",
 }));
+
+const BBoxImage = ({ imageLink, info, style = {} }) => {
+	const { x, y, w, h } = info;
+	const { borderColor = "red", borderWidth = 100 } = style;
+	const canvasRef = React.useRef(null);
+
+	useEffect(() => {
+		const canvas = canvasRef.current;
+		console.log(
+			"🚀 ~ file: RetriveImage.js ~ line 212 ~ useEffect ~ canvas",
+			canvas
+		);
+		const context = canvas.getContext("2d");
+		const img = new Image();
+		img.src = imageLink;
+		img.onload = () => {
+			context.drawImage(img, 0, 0, canvas.width, canvas.height);
+			context.beginPath();
+			context.strokeStyle = borderColor;
+			context.lineWidth = borderWidth;
+			context.rect(x, y, w, h);
+			context.stroke();
+		};
+	});
+	return (
+		<>
+			<canvas ref={canvasRef} />
+			{/* <StytedImage
+				src={`${STATIC_URL}/${image}`}
+				alt="Oxford building"
+				loading="lazy"
+			/> */}
+		</>
+	);
+};
