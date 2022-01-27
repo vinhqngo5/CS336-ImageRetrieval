@@ -44,7 +44,12 @@ export default function RetrieveImage() {
 
 	const loadImages = () => {
 		getBase64FromUrl(imageRetrievalState.croppedQueryImage).then((base64) => {
-			dispatch(actions.fetchRelevantImages.fetchRelevantImagesRequest(base64));
+			dispatch(
+				actions.fetchRelevantImages.fetchRelevantImagesRequest({
+					base64,
+					top_k: 20,
+				})
+			);
 		});
 	};
 
@@ -207,32 +212,28 @@ const BBoxImage = ({ imageLink, info, style = {} }) => {
 	const { borderColor = "red", borderWidth = 100 } = style;
 	const canvasRef = React.useRef(null);
 
-	useEffect(() => {
-		const canvas = canvasRef.current;
-		console.log(
-			"🚀 ~ file: RetriveImage.js ~ line 212 ~ useEffect ~ canvas",
-			canvas
-		);
-		const context = canvas.getContext("2d");
-		const img = new Image();
-		img.src = imageLink;
-		img.onload = () => {
-			context.drawImage(img, 0, 0, canvas.width, canvas.height);
-			context.beginPath();
-			context.strokeStyle = borderColor;
-			context.lineWidth = borderWidth;
-			context.rect(x, y, w, h);
-			context.stroke();
-		};
-	});
+	// useEffect(() => {
+	// 	const canvas = canvasRef.current;
+	// 	console.log(
+	// 		"🚀 ~ file: RetriveImage.js ~ line 212 ~ useEffect ~ canvas",
+	// 		canvas
+	// 	);
+	// 	const context = canvas.getContext("2d");
+	// 	const img = new Image();
+	// 	img.src = imageLink;
+	// 	img.onload = () => {
+	// 		context.drawImage(img, 0, 0, canvas.width, canvas.height);
+	// 		context.beginPath();
+	// 		context.strokeStyle = borderColor;
+	// 		context.lineWidth = borderWidth;
+	// 		context.rect(x, y, w, h);
+	// 		context.stroke();
+	// 	};
+	// });
 	return (
 		<>
-			<canvas ref={canvasRef} />
-			{/* <StytedImage
-				src={`${STATIC_URL}/${image}`}
-				alt="Oxford building"
-				loading="lazy"
-			/> */}
+			{/* <canvas ref={canvasRef} /> */}
+			<StytedImage src={imageLink} alt="Oxford building" loading="lazy" />
 		</>
 	);
 };

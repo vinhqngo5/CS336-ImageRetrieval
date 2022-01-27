@@ -10,7 +10,11 @@ export const fetchSuggestedImages = (category) => {
 	return axios.post(`${URL}/get-suggest-query`, body);
 };
 
-export const fetchRelevantImages = (image, top_k = 10) => {
+export const fetchRelevantImages = ({
+	base64: image,
+	top_k = 10,
+	resize_ratio = 1,
+}) => {
 	// let body = {
 	// 	query: image,
 	// 	top_k: top_k,
@@ -18,6 +22,7 @@ export const fetchRelevantImages = (image, top_k = 10) => {
 	const body = new FormData();
 	body.append("query", image);
 	body.append("top_k", top_k);
+	body.append("resize_ratio", resize_ratio);
 	return axios.post(`${URL}/query`, body);
 };
 
