@@ -9,7 +9,7 @@ export const LoginButton = withLogin(Button);
 
 export default function Heading() {
 	const theme = useTheme();
-	const matches = useMediaQuery(theme.breakpoints.up("md"));
+	const matches = useMediaQuery(theme.breakpoints.up("lg"));
 	if (!matches) return null;
 	return (
 		<Paper

@@ -18,7 +18,7 @@ export const LoginButton = withLogin(Button);
 export default function SmallHeader() {
 	const theme = useTheme();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-	const matches = useMediaQuery(theme.breakpoints.up("md"));
+	const matches = useMediaQuery(theme.breakpoints.up("lg"));
 
 	const handleDrawer = useCallback(() => {
 		setIsDrawerOpen(!isDrawerOpen);

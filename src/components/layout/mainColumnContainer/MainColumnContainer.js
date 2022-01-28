@@ -21,10 +21,11 @@ export default function MainColumnContainer(props) {
 					component={Grid}
 					item
 					md={2}
-					xl={1}
+					lg={2}
+					xl={1.5}
 					display={{
 						xs: "none",
-						md: "block",
+						lg: "block",
 					}}
 					sx={{
 						height: "100vh",
@@ -32,7 +33,7 @@ export default function MainColumnContainer(props) {
 				>
 					<LeftSideBar />
 				</Box>
-				<Box component={Grid} item xs={12} md={10} lg={7} xl={6}>
+				<Box component={Grid} item sm={12} md={8} lg={7} xl={6}>
 					<SmallHeader />
 					<Box
 						sx={{
@@ -48,11 +49,12 @@ export default function MainColumnContainer(props) {
 				<Box
 					component={Grid}
 					item
+					md={4}
 					lg={3}
 					xl={2}
 					display={{
-						lg: "block",
-						xs: "none",
+						md: "block",
+						sm: "none",
 					}}
 					sx={{
 						height: "100vh",
