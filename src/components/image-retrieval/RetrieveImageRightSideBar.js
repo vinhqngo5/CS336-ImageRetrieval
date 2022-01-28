@@ -22,22 +22,22 @@ import { imageRetrievalState$ } from "../../redux/selectors";
 import { STATIC_URL } from "../../config";
 
 const availableQueries = [
-	{ label: "All Souls Oxford" },
-	{ label: "Balliol Oxford" },
-	{ label: "Christ Church Oxford" },
-	{ label: "Hertford Oxford" },
-	{ label: "Jesus Oxford" },
-	{ label: "Keble Oxford" },
-	{ label: "Magdalen Oxford" },
-	{ label: "New Oxford" },
-	{ label: "Oriel Oxford" },
-	{ label: "Trinity Oxford" },
-	{ label: "Radcliffe Camera Oxford" },
-	{ label: "Bodleian Oxford" },
-	{ label: "Pitt Rivers Oxford" },
-	{ label: "Ashmolean Oxford" },
-	{ label: "Worcester Oxford" },
-	{ label: "Oxford" },
+	{ label: "Christ church Oxford", payload: "christ_church" },
+	{ label: "Trinity Oxford", payload: "trinity" },
+	{ label: "Magdalen Oxford", payload: "magdalen" },
+	{ label: "Balliol Oxford", payload: "balliol" },
+	{ label: "Hertford Oxford", payload: "hertford" },
+	{ label: "Radcliffe Camera Oxford", payload: "radcliffe_camera" },
+	{ label: "New Oxford", payload: "new" },
+	{ label: "Ashmolean Oxford", payload: "ashmolean" },
+	{ label: "All Souls Oxford", payload: "all_souls" },
+	{ label: "Oriel Camera Oxford", payload: "oriel" },
+	{ label: "Worcester Oxford", payload: "worcester" },
+	{ label: "Bodleian Oxford", payload: "bodleian" },
+	{ label: "Cornmarket Oxford", payload: "cornmarket" },
+	{ label: "Pitt Rivers Oxford", payload: "pitt_rivers" },
+	{ label: "Keble Oxford", payload: "keble" },
+	{ label: "Jesus Oxford", payload: "jesus" },
 ];
 
 export default function RightSideBar() {
@@ -48,10 +48,14 @@ export default function RightSideBar() {
 	const images = imageRetrievalState.suggestedImages;
 	const [isOpened, setIsOpened] = useState(false);
 
+	const [value, setValue] = React.useState(null);
+	const [inputValue, setInputValue] = React.useState("");
+
 	const loadImages = () => {
-		dispatch(
-			actions.fetchSuggestedImages.fetchSuggestedImagesRequest("christ_church")
-		);
+		value &&
+			dispatch(
+				actions.fetchSuggestedImages.fetchSuggestedImagesRequest(value.payload)
+			);
 	};
 
 	const handleChange = (event) => {
@@ -110,6 +114,22 @@ export default function RightSideBar() {
 								color: "text.primary",
 								backgroundColor: "backgroundSecondary.default",
 								marginRight: "12px",
+							}}
+							value={value}
+							onChange={(event, newValue) => {
+								console.log(
+									"🚀 ~ file: RetrieveImageRightSideBar.js ~ line 121 ~ RightSideBar ~ newValue",
+									newValue
+								);
+								setValue(newValue);
+							}}
+							inputValue={inputValue}
+							onInputChange={(event, newInputValue) => {
+								console.log(
+									"🚀 ~ file: RetrieveImageRightSideBar.js ~ line 125 ~ RightSideBar ~ newInputValue",
+									newInputValue
+								);
+								setInputValue(newInputValue);
 							}}
 							id="combo-box-demo"
 							options={availableQueries}

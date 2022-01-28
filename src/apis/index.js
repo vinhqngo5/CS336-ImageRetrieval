@@ -4,9 +4,12 @@ import { fetchedPosts, user } from "../constants/cloneDatabase";
 import { URL } from "../config";
 
 export const fetchSuggestedImages = (category) => {
-	let body = {
-		category: category,
-	};
+	console.log(
+		"🚀 ~ file: index.js ~ line 7 ~ fetchSuggestedImages ~ category",
+		category
+	);
+	const body = new FormData();
+	body.append("category", category);
 	return axios.post(`${URL}/get-suggest-query`, body);
 };
 

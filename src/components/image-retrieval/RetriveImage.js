@@ -199,8 +199,18 @@ function MasonryImageList({ images }) {
 
 const StytedImage = styled("img")(({ theme }) => ({
 	"&:hover": {
-		transform: "scale(1.05)",
-		transition: "0.25s ease",
+		// transform: "scale(1.05)",
+		// transition: "0.25s ease",
+		cursor: "pointer",
+	},
+	width: "100%",
+	borderRadius: "4px",
+}));
+
+const StytedDiv = styled("img")(({ theme }) => ({
+	"&:hover": {
+		// transform: "scale(1.05)",
+		// transition: "0.25s ease",
 		cursor: "pointer",
 	},
 	width: "100%",
@@ -232,7 +242,17 @@ const BBoxImage = ({ imageLink, info, style = {} }) => {
 	// });
 	return (
 		<>
-			{/* <canvas ref={canvasRef} /> */}
+			<div
+				style={{
+					position: "absolute",
+					border: "1px solid red",
+					backgroundColor: "transparent",
+					width: "100px",
+					height: "100px",
+					top: " 50px",
+					left: " 50px",
+				}}
+			></div>
 			<StytedImage src={imageLink} alt="Oxford building" loading="lazy" />
 		</>
 	);
