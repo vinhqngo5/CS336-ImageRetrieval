@@ -4,6 +4,7 @@ import {
 	Button,
 	ImageList,
 	ImageListItem,
+	ImageListItemBar,
 	Skeleton,
 	TextField,
 } from "@mui/material";
@@ -15,7 +16,12 @@ import * as actions from "../../redux/actions";
 import { imageRetrievalState$ } from "../../redux/selectors";
 import { getBase64FromUrl } from "../../utils/getBase64FromUrl";
 import { STATIC_URL } from "../../config";
-import { BlogCaptionSmall, BlogSubtitle } from "../common/BlogTypography";
+import {
+	BlogCaption,
+	BlogCaptionSmall,
+	BlogH7,
+	BlogSubtitle,
+} from "../common/BlogTypography";
 
 const availableQueries = [
 	{ label: "All Souls Oxford" },
@@ -41,6 +47,11 @@ export default function RetrieveImage() {
 	const dispatch = useDispatch();
 	const imageRetrievalState = useSelector(imageRetrievalState$);
 	const images = imageRetrievalState.relevantImages.relevant_image_name;
+	const topKScore = imageRetrievalState.relevantImages.top_k_score;
+	console.log(
+		"🚀 ~ file: RetriveImage.js ~ line 46 ~ RetrieveImage ~ topKScore",
+		topKScore
+	);
 
 	const loadImages = () => {
 		getBase64FromUrl(imageRetrievalState.croppedQueryImage).then((base64) => {
@@ -143,12 +154,14 @@ export default function RetrieveImage() {
 					</Button>
 				</Box>
 			</Box>
-			<MasonryImageList images={images} />
+			<MasonryImageList images={images} topKScore={topKScore} />
 		</Box>
 	);
 }
 
-function MasonryImageList({ images }) {
+function MasonryImageList({ images, topKScore }) {
+	let topKScoreArray = (topKScore || "").slice(1, -1).split(",");
+
 	const imageRetrievalState = useSelector(imageRetrievalState$);
 	return (
 		<Box sx={{ width: "100%" }}>
@@ -178,6 +191,17 @@ function MasonryImageList({ images }) {
 										h: 50,
 									}}
 								></BBoxImage>
+								<ImageListItemBar
+									title={
+										<BlogH7 sx={{ fontSize: "14px"}}>
+											{image.split(".")[0].toUpperCase()}
+										</BlogH7>
+									}
+									subtitle={
+										<BlogCaption>Score: {topKScoreArray[index]}</BlogCaption>
+									}
+									position="below"
+								/>
 							</ImageListItem>
 					  ))
 					: Array.from(new Array(30)).map((el, index) => (
