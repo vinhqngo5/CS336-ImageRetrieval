@@ -17,6 +17,7 @@ export const fetchRelevantImages = ({
 	base64: image,
 	top_k = 10,
 	resize_ratio = 1,
+	return_bboxes,
 }) => {
 	// let body = {
 	// 	query: image,
@@ -26,6 +27,7 @@ export const fetchRelevantImages = ({
 	body.append("query", image);
 	body.append("top_k", top_k);
 	body.append("resize_ratio", resize_ratio);
+	body.append("return_bboxes", return_bboxes);
 	return axios.post(`${URL}/query`, body);
 };
 

@@ -137,6 +137,7 @@ class CropImage extends PureComponent {
 					justifyContent: src ? "flex-start" : "center",
 					alignItems: "center",
 					width: "100%",
+					marginTop: "30px",
 				}}
 			>
 				{src ? (

@@ -46,11 +46,11 @@ export default function modalReducer(
 		case getType(fetchRelevantImages.fetchRelevantImagesSuccess):
 			console.log(
 				"🚀 ~ file: imageRetrievalState.js ~ line 44 ~ action.payload",
-				action.payload
+				JSON.parse(action.payload.result)
 			);
 			return {
 				...state,
-				relevantImages: action.payload.result,
+				relevantImages: JSON.parse(action.payload.result),
 				isLoadingRelevantImages: false,
 			};
 		case getType(fetchRelevantImages.fetchRelevantImagesFailure):

@@ -48,17 +48,19 @@ export default function RetrieveImage() {
 	const imageRetrievalState = useSelector(imageRetrievalState$);
 	const images = imageRetrievalState.relevantImages.relevant_image_name;
 	const topKScore = imageRetrievalState.relevantImages.top_k_score;
+	const BBoxes = imageRetrievalState.relevantImages.bboxes;
 	console.log(
 		"🚀 ~ file: RetriveImage.js ~ line 46 ~ RetrieveImage ~ topKScore",
 		topKScore
 	);
 
-	const loadImages = () => {
+	const loadImages = ({ return_bboxes }) => {
 		getBase64FromUrl(imageRetrievalState.croppedQueryImage).then((base64) => {
 			dispatch(
 				actions.fetchRelevantImages.fetchRelevantImagesRequest({
 					base64,
 					top_k: 20,
+					return_bboxes: return_bboxes,
 				})
 			);
 		});
@@ -82,7 +84,7 @@ export default function RetrieveImage() {
 		>
 			<Box
 				sx={{
-					marginTop: "10px",
+					// marginTop: "10px",
 					display: "flex",
 					flexDirection: "row",
 					justifyContent: "space-between",
@@ -91,7 +93,7 @@ export default function RetrieveImage() {
 			>
 				<Box
 					sx={{
-						width: "70%",
+						width: "50%",
 						display: "flex",
 					}}
 				>
@@ -135,7 +137,7 @@ export default function RetrieveImage() {
 							marginRight: "12px",
 						}}
 						variant="outlined"
-						onClick={loadImages}
+						onClick={() => loadImages({ return_bboxes: false })}
 						endIcon={<SearchOutlined />}
 					>
 						Search
@@ -146,20 +148,20 @@ export default function RetrieveImage() {
 						}}
 						variant="outlined"
 						color="success"
-						onClick={loadImages}
+						onClick={() => loadImages({ return_bboxes: true })}
 						endIcon={<SyncAlt />}
 						disableElevation
 					>
-						Update
+						Search with bboxes
 					</Button>
 				</Box>
 			</Box>
-			<MasonryImageList images={images} topKScore={topKScore} />
+			<MasonryImageList images={images} topKScore={topKScore} BBoxes={BBoxes} />
 		</Box>
 	);
 }
 
-function MasonryImageList({ images, topKScore }) {
+function MasonryImageList({ images, topKScore, BBoxes }) {
 	let topKScoreArray = (topKScore || "").slice(1, -1).split(",");
 
 	const imageRetrievalState = useSelector(imageRetrievalState$);
@@ -176,14 +178,10 @@ function MasonryImageList({ images, topKScore }) {
 			<ImageList variant="masonry" cols={2} gap={12}>
 				{!imageRetrievalState.isLoadingRelevantImages
 					? (images || []).map((image, index) => (
-							<ImageListItem key={index}>
-								{/* <StytedImage
-									src={`${STATIC_URL}/${image}`}
-									alt="Oxford building"
-									loading="lazy"
-								/> */}
+							<ImageListItem key={index} sx={{}}>
 								<BBoxImage
 									imageLink={`${STATIC_URL}/${image}`}
+									BBox={BBoxes[index + 1]}
 									info={{
 										x: 200,
 										y: 220,
@@ -193,7 +191,7 @@ function MasonryImageList({ images, topKScore }) {
 								></BBoxImage>
 								<ImageListItemBar
 									title={
-										<BlogH7 sx={{ fontSize: "14px"}}>
+										<BlogH7 sx={{ fontSize: "14px" }}>
 											{image.split(".")[0].toUpperCase()}
 										</BlogH7>
 									}
@@ -241,43 +239,52 @@ const StytedDiv = styled("img")(({ theme }) => ({
 	borderRadius: "4px",
 }));
 
-const BBoxImage = ({ imageLink, info, style = {} }) => {
+const BBoxImage = ({ imageLink, info, BBox, style = {} }) => {
 	const { x, y, w, h } = info;
 	const { borderColor = "red", borderWidth = 100 } = style;
-	const canvasRef = React.useRef(null);
+	const imageRef = React.useRef(null);
+	// console.log("🚀 ~ file: RetriveImage.js ~ line 295 ~ BBoxImage ~ BBox", BBox);
+	const topLeft = BBox?.[0];
+	const bottomRight = BBox?.[2];
+	console.log(
+		"🚀 ~ file: RetriveImage.js ~ line 252 ~ BBoxImage ~ topLeft",
+		topLeft,
+		bottomRight
+	);
+	let height = Math.abs(bottomRight?.[1] - topLeft?.[1]);
+	let width = Math.abs(bottomRight?.[0] - topLeft?.[0]);
+	const [ratio, setRatio] = useState(1);
 
-	// useEffect(() => {
-	// 	const canvas = canvasRef.current;
-	// 	console.log(
-	// 		"🚀 ~ file: RetriveImage.js ~ line 212 ~ useEffect ~ canvas",
-	// 		canvas
-	// 	);
-	// 	const context = canvas.getContext("2d");
-	// 	const img = new Image();
-	// 	img.src = imageLink;
-	// 	img.onload = () => {
-	// 		context.drawImage(img, 0, 0, canvas.width, canvas.height);
-	// 		context.beginPath();
-	// 		context.strokeStyle = borderColor;
-	// 		context.lineWidth = borderWidth;
-	// 		context.rect(x, y, w, h);
-	// 		context.stroke();
-	// 	};
-	// });
+	useEffect(() => {
+		const image = imageRef.current;
+		setRatio(image.width / image.naturalWidth);
+		console.log(
+			"🚀 ~ file: RetriveImage.js ~ line 261 ~ useEffect ~ ratio",
+			image.width / image.naturalWidth
+		);
+	});
 	return (
 		<>
+			<div style={{ margiBottom: "10px" }}>
+				{width}, {height}, {ratio}, {topLeft}, {bottomRight}
+			</div>
 			<div
 				style={{
 					position: "absolute",
 					border: "1px solid red",
 					backgroundColor: "transparent",
-					width: "100px",
-					height: "100px",
-					top: " 50px",
-					left: " 50px",
+					width: `${width * ratio}px`,
+					height: `${height * ratio}px`,
+					left: `${(topLeft?.[0] || 0) * ratio}px`,
+					top: `${(topLeft?.[1] || 0) * ratio}px`,
 				}}
 			></div>
-			<StytedImage src={imageLink} alt="Oxford building" loading="lazy" />
+			<StytedImage
+				ref={imageRef}
+				src={imageLink}
+				alt="Oxford building"
+				loading="lazy"
+			/>
 		</>
 	);
 };

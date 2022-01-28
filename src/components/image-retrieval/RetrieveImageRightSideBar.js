@@ -46,16 +46,17 @@ export default function RightSideBar() {
 
 	// const [images, setImages] = useState([]);
 	const images = imageRetrievalState.suggestedImages;
-	const [isOpened, setIsOpened] = useState(false);
+	const [isOpened, setIsOpened] = useState(true);
 
 	const [value, setValue] = React.useState(null);
 	const [inputValue, setInputValue] = React.useState("");
 
 	const loadImages = () => {
-		value &&
-			dispatch(
-				actions.fetchSuggestedImages.fetchSuggestedImagesRequest(value.payload)
-			);
+		dispatch(
+			actions.fetchSuggestedImages.fetchSuggestedImagesRequest(
+				value?.payload || "random"
+			)
+		);
 	};
 
 	const handleChange = (event) => {
