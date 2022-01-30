@@ -182,12 +182,6 @@ function MasonryImageList({ images, topKScore, BBoxes }) {
 								<BBoxImage
 									imageLink={`${STATIC_URL}/${image}`}
 									BBox={BBoxes[index + 1]}
-									info={{
-										x: 200,
-										y: 220,
-										w: 100,
-										h: 50,
-									}}
 								></BBoxImage>
 								<ImageListItemBar
 									title={
@@ -239,34 +233,23 @@ const StytedDiv = styled("img")(({ theme }) => ({
 	borderRadius: "4px",
 }));
 
-const BBoxImage = ({ imageLink, info, BBox, style = {} }) => {
-	const { x, y, w, h } = info;
-	const { borderColor = "red", borderWidth = 100 } = style;
+const BBoxImage = ({ imageLink, BBox }) => {
 	const imageRef = React.useRef(null);
-	// console.log("🚀 ~ file: RetriveImage.js ~ line 295 ~ BBoxImage ~ BBox", BBox);
-	const topLeft = BBox?.[0];
-	const bottomRight = BBox?.[2];
-	console.log(
-		"🚀 ~ file: RetriveImage.js ~ line 252 ~ BBoxImage ~ topLeft",
-		topLeft,
-		bottomRight
-	);
-	let height = Math.abs(bottomRight?.[1] - topLeft?.[1]);
-	let width = Math.abs(bottomRight?.[0] - topLeft?.[0]);
 	const [ratio, setRatio] = useState(1);
+
+	const [top, bot, left, right] = BBox;
+
+	let width = Math.abs(right - left);
+	let height = Math.abs(bot - top);
 
 	useEffect(() => {
 		const image = imageRef.current;
 		setRatio(image.width / image.naturalWidth);
-		console.log(
-			"🚀 ~ file: RetriveImage.js ~ line 261 ~ useEffect ~ ratio",
-			image.width / image.naturalWidth
-		);
 	});
 	return (
 		<>
 			<div style={{ margiBottom: "10px" }}>
-				{width}, {height}, {ratio}, {topLeft}, {bottomRight}
+				{left}, {top}, {width}, {height}, {ratio}
 			</div>
 			<div
 				style={{
@@ -275,8 +258,8 @@ const BBoxImage = ({ imageLink, info, BBox, style = {} }) => {
 					backgroundColor: "transparent",
 					width: `${width * ratio}px`,
 					height: `${height * ratio}px`,
-					left: `${(topLeft?.[0] || 0) * ratio}px`,
-					top: `${(topLeft?.[1] || 0) * ratio}px`,
+					left: `${(left || 0) * ratio}px`,
+					top: `${(top || 0) * ratio}px`,
 				}}
 			></div>
 			<StytedImage
