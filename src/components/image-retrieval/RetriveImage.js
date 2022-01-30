@@ -42,6 +42,8 @@ const availableQueries = [
 	{ label: "Oxford" },
 ];
 
+const settings = [{ label: "Query with LSH" }, { label: "Query without LSH" }];
+
 export default function RetrieveImage() {
 	// const [images, setImages] = useState([]);
 	const dispatch = useDispatch();
@@ -49,10 +51,6 @@ export default function RetrieveImage() {
 	const images = imageRetrievalState.relevantImages.relevant_image_name;
 	const topKScore = imageRetrievalState.relevantImages.top_k_score;
 	const BBoxes = imageRetrievalState.relevantImages.bboxes;
-	console.log(
-		"🚀 ~ file: RetriveImage.js ~ line 46 ~ RetrieveImage ~ topKScore",
-		topKScore
-	);
 
 	const loadImages = ({ return_bboxes }) => {
 		getBase64FromUrl(imageRetrievalState.croppedQueryImage).then((base64) => {
@@ -102,27 +100,12 @@ export default function RetrieveImage() {
 						sx={{
 							color: "text.primary",
 							backgroundColor: "backgroundSecondary.default",
-							marginRight: "12px",
 							flexGrow: "1",
 						}}
 						id="combo-box-demo"
-						options={availableQueries}
+						options={settings}
 						renderInput={(params) => (
-							<TextField {...params} label="setting 1" size="small" />
-						)}
-					/>
-					<Autocomplete
-						disablePortal
-						sx={{
-							color: "text.primary",
-							backgroundColor: "backgroundSecondary.default",
-							marginRight: "12px",
-							flexGrow: "1",
-						}}
-						id="combo-box-demo"
-						options={availableQueries}
-						renderInput={(params) => (
-							<TextField {...params} label="setting 2" size="small" />
+							<TextField {...params} label="settings" size="small" />
 						)}
 					/>
 				</Box>
@@ -237,10 +220,23 @@ const BBoxImage = ({ imageLink, BBox }) => {
 	const imageRef = React.useRef(null);
 	const [ratio, setRatio] = useState(1);
 
-	const [top, bot, left, right] = BBox;
+	let top = 0,
+		bot = 0,
+		left = 0,
+		right = 0,
+		width = 0,
+		height = 0;
 
-	let width = Math.abs(right - left);
-	let height = Math.abs(bot - top);
+	let drawBBox = false;
+	if ((BBox || []).length > 0) {
+		drawBBox = true;
+	}
+
+	if (drawBBox) {
+		[top, bot, left, right] = BBox;
+		width = Math.abs(right - left);
+		height = Math.abs(bot - top);
+	}
 
 	useEffect(() => {
 		const image = imageRef.current;
@@ -248,20 +244,19 @@ const BBoxImage = ({ imageLink, BBox }) => {
 	});
 	return (
 		<>
-			<div style={{ margiBottom: "10px" }}>
-				{left}, {top}, {width}, {height}, {ratio}
-			</div>
-			<div
-				style={{
-					position: "absolute",
-					border: "1px solid red",
-					backgroundColor: "transparent",
-					width: `${width * ratio}px`,
-					height: `${height * ratio}px`,
-					left: `${(left || 0) * ratio}px`,
-					top: `${(top || 0) * ratio}px`,
-				}}
-			></div>
+			{drawBBox && (
+				<div
+					style={{
+						position: "absolute",
+						border: "1px solid red",
+						backgroundColor: "transparent",
+						width: `${width * ratio}px`,
+						height: `${height * ratio}px`,
+						left: `${(left || 0) * ratio}px`,
+						top: `${(top || 0) * ratio}px`,
+					}}
+				></div>
+			)}
 			<StytedImage
 				ref={imageRef}
 				src={imageLink}
