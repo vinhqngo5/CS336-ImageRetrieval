@@ -266,6 +266,10 @@ const BBoxImage = ({ imageLink, BBox }) => {
 	useEffect(() => {
 		const image = imageRef.current;
 		setRatio(image.width / image.naturalWidth);
+		setTimeout(() => {
+			const image = imageRef.current;
+			setRatio(image?.width / image?.naturalWidth);
+		}, 1000);
 	});
 	return (
 		<>
