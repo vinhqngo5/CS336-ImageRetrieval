@@ -270,6 +270,10 @@ const BBoxImage = ({ imageLink, BBox }) => {
 			const image = imageRef.current;
 			setRatio(image?.width / image?.naturalWidth);
 		}, 1000);
+		setTimeout(() => {
+			const image = imageRef.current;
+			setRatio(image?.width / image?.naturalWidth);
+		}, 4000);
 	});
 	return (
 		<>
@@ -290,7 +294,7 @@ const BBoxImage = ({ imageLink, BBox }) => {
 				ref={imageRef}
 				src={imageLink}
 				alt="Oxford building"
-				loading="lazy"
+				// loading="lazy"
 			/>
 		</>
 	);
