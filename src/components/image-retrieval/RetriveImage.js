@@ -177,7 +177,7 @@ function MasonryImageList({ images, topKScore, BBoxes }) {
 		<Box sx={{ width: "100%" }}>
 			{images && !imageRetrievalState.isLoadingRelevantImages ? (
 				<BlogCaptionSmall sx={{ marginTop: "12px" }}>
-					Query 10 most relevant images (
+					Query {images.length} most relevant images (
 					{imageRetrievalState.relevantImages.query_time}s)
 				</BlogCaptionSmall>
 			) : (

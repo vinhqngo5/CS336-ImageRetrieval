@@ -1,0 +1,3 @@
+[submodule "ImageRetrival"]
+	path = ImageRetrival
+	url = https://github.com/manhkhanhad/ImageRetrival.git
