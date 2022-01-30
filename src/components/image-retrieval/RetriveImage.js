@@ -24,8 +24,8 @@ import {
 } from "../common/BlogTypography";
 
 const settings = [
-	{ label: "Query with LSH", payload: true },
-	{ label: "Query without LSH", payload: false },
+	{ label: "LSH", payload: true },
+	{ label: "non-LSH", payload: false },
 ];
 
 const settings2 = [
@@ -264,16 +264,31 @@ const BBoxImage = ({ imageLink, BBox }) => {
 	}
 
 	useEffect(() => {
-		const image = imageRef.current;
-		setRatio(image.width / image.naturalWidth);
-		setTimeout(() => {
+		let prevValue = imageRef.current.naturalWidth;
+		const start = Date.now();
+		const handle = setInterval(() => {
 			const image = imageRef.current;
-			setRatio(image?.width / image?.naturalWidth);
+			let nextValue = image?.naturalWidth;
+			if (nextValue === prevValue) {
+				setRatio(image?.width / image?.naturalWidth);
+				clearInterval(handle);
+				console.log(
+					`width stopped changing in ${Date.now() - start}ms. final width:`,
+					image?.naturalWidth
+				);
+			} else {
+				prevValue = nextValue;
+			}
 		}, 1000);
-		setTimeout(() => {
-			const image = imageRef.current;
-			setRatio(image?.width / image?.naturalWidth);
-		}, 4000);
+
+		// setTimeout(() => {
+		// 	const image = imageRef.current;
+		// 	setRatio(image?.width / image?.naturalWidth);
+		// }, 1000);
+		// setTimeout(() => {
+		// 	const image = imageRef.current;
+		// 	setRatio(image?.width / image?.naturalWidth);
+		// }, 4000);
 	});
 	return (
 		<>
