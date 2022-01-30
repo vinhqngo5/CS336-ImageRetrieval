@@ -23,26 +23,16 @@ import {
 	BlogSubtitle,
 } from "../common/BlogTypography";
 
-const availableQueries = [
-	{ label: "All Souls Oxford" },
-	{ label: "Balliol Oxford" },
-	{ label: "Christ Church Oxford" },
-	{ label: "Hertford Oxford" },
-	{ label: "Jesus Oxford" },
-	{ label: "Keble Oxford" },
-	{ label: "Magdalen Oxford" },
-	{ label: "New Oxford" },
-	{ label: "Oriel Oxford" },
-	{ label: "Trinity Oxford" },
-	{ label: "Radcliffe Camera Oxford" },
-	{ label: "Bodleian Oxford" },
-	{ label: "Pitt Rivers Oxford" },
-	{ label: "Ashmolean Oxford" },
-	{ label: "Worcester Oxford" },
-	{ label: "Oxford" },
+const settings = [
+	{ label: "Query with LSH", payload: true },
+	{ label: "Query without LSH", payload: false },
 ];
 
-const settings = [{ label: "Query with LSH" }, { label: "Query without LSH" }];
+const settings2 = [
+	{ label: "10", payload: 10 },
+	{ label: "20", payload: 20 },
+	{ label: "30", payload: 30 },
+];
 
 export default function RetrieveImage() {
 	// const [images, setImages] = useState([]);
@@ -51,14 +41,19 @@ export default function RetrieveImage() {
 	const images = imageRetrievalState.relevantImages.relevant_image_name;
 	const topKScore = imageRetrievalState.relevantImages.top_k_score;
 	const BBoxes = imageRetrievalState.relevantImages.bboxes;
+	const [value, setValue] = React.useState(settings[1]);
+	const [inputValue, setInputValue] = React.useState("");
+	const [value2, setValue2] = React.useState(settings2[0]);
+	const [inputValue2, setInputValue2] = React.useState("");
 
 	const loadImages = ({ return_bboxes }) => {
 		getBase64FromUrl(imageRetrievalState.croppedQueryImage).then((base64) => {
 			dispatch(
 				actions.fetchRelevantImages.fetchRelevantImagesRequest({
 					base64,
-					top_k: 20,
+					top_k: value2.payload,
 					return_bboxes: return_bboxes,
+					lsh: value.payload,
 				})
 			);
 		});
@@ -100,12 +95,42 @@ export default function RetrieveImage() {
 						sx={{
 							color: "text.primary",
 							backgroundColor: "backgroundSecondary.default",
-							flexGrow: "1",
+							flexGrow: "10",
+							marginRight: "12px",
 						}}
 						id="combo-box-demo"
 						options={settings}
+						value={value}
+						onChange={(event, newValue) => {
+							setValue(newValue);
+						}}
+						inputValue={inputValue}
+						onInputChange={(event, newInputValue) => {
+							setInputValue(newInputValue);
+						}}
 						renderInput={(params) => (
 							<TextField {...params} label="settings" size="small" />
+						)}
+					/>
+					<Autocomplete
+						disablePortal
+						sx={{
+							color: "text.primary",
+							backgroundColor: "backgroundSecondary.default",
+							flexGrow: "1",
+						}}
+						id="combo-box-demo"
+						options={settings2}
+						value={value2}
+						onChange={(event, newValue) => {
+							setValue2(newValue);
+						}}
+						inputValue={inputValue2}
+						onInputChange={(event, newInputValue) => {
+							setInputValue2(newInputValue);
+						}}
+						renderInput={(params) => (
+							<TextField {...params} label="Number of returns" size="small" />
 						)}
 					/>
 				</Box>

@@ -118,18 +118,10 @@ export default function RightSideBar() {
 							}}
 							value={value}
 							onChange={(event, newValue) => {
-								console.log(
-									"🚀 ~ file: RetrieveImageRightSideBar.js ~ line 121 ~ RightSideBar ~ newValue",
-									newValue
-								);
 								setValue(newValue);
 							}}
 							inputValue={inputValue}
 							onInputChange={(event, newInputValue) => {
-								console.log(
-									"🚀 ~ file: RetrieveImageRightSideBar.js ~ line 125 ~ RightSideBar ~ newInputValue",
-									newInputValue
-								);
 								setInputValue(newInputValue);
 							}}
 							id="combo-box-demo"
